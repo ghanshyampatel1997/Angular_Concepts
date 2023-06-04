@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-content></ng-content>
+
+            <button class="btn btn-primary" 
+            [disabled]="!allNewServer"    
+            (click)="onServerCreate();sendInfoToAppComponent()"
+            >Add Server</button><!--[] Property binding and () for event binding without "on" as prefix. -->
+            <p>{{createdServerStatus}}</p>
+            <p>{{allNewServer}}</p>      <!--String Interpolation-->
+            <p [innerText]="allNewServer"></p>  <!--Property binding-->
+            <input (input)="onServerInput($event)"/>   <!--event binding-->
+            <input [(ngModel)] = "inputServer"/>    <!--Property and event binding by ngModel 
+                which requires FormsModule imported in ngModule -->
+            {{inputServer}}
+            <p *ngIf="allNewServer; else noServer"> Server is created! </p>  <!-- Structural directive with if else-->
+            <ng-template #noServer><p>No Server is created yet</p> </ng-template>
+            <hr>
+            <p>Directives are instructions to DOM, selectors of Component also is a directive.</p>
+            <p [ngStyle]="{backgroundColor:getColor()}"
+            [ngClass]="{online:allNewServer}">Attribut directive like ngStyle. For structural directive * is import like *ngIf,*ngFor but not for ngStyle, Here online is class name for style.</p>
+            <hr>
+            <input #localReference (click)="GoingToAlert(localReference.value)"/>
+            <span>Local reference of HTML tag can be used in HTML template only but we can pass it as above.</span>
+            <hr>
+            <span>{{localReferencedElementOfDOM?.nativeElement.value}}</span>
+            <span>ViewChild can be used to access DOM element into .TS code but it will require local element reference as argument</span>
+            <!-- <app-server></app-server>
+            <app-server></app-server> 
+            
+            use above to use same component as much as you want or below-->
+            <div *ngFor="let server of servers;let i=index;">{{i}} {{server}}</div>
+            <app-server *ngFor="let server of servers;let i=index;" [index]="i" [serverName]="server">{{i}} {{server}}</app-server>  <!--*ngFor structural directive-->
+            
+            <p>This is the info that we got from App-Component to Servers Component</p>
+            <p>Name:{{receiveFromParent.name}}</p>
+            <p>Description:{{receiveFromParent.description}}</p>
+        </div>
+    </div>
+</div>
